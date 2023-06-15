@@ -7,7 +7,7 @@ const getUser = (req) => {
       .toString('ascii');
 
     if (principal) {
-      return JSON.parse(principal)?.userId;
+      return JSON.parse(principal);
     }
   } catch (error) {
     req.log.error('Cannot get user', error);
