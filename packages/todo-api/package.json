@@ -1,0 +1,31 @@
+{
+  "name": "todo-api",
+  "version": "1.0.0",
+  "description": "api for the TODO app",
+  "main": "app.js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "echo \"no tests... yet\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MykalMachon/AzureTodo.git"
+  },
+  "keywords": [
+    "api",
+    "express"
+  ],
+  "author": "Mykal Machon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MykalMachon/AzureTodo/issues"
+  },
+  "homepage": "https://github.com/MykalMachon/AzureTodo#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "debug": "^4.3.4",
+    "express": "^4.18.2",
+    "pino-http": "^8.3.3"
+  }
+}

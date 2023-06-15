@@ -1,0 +1,13 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "todo-website": {
+      "appLocation": ".",
+      "outputLocation": "dist",
+      "run": "npm run dev",
+      "appBuildCommand": "npm run build",
+      "appDevserverUrl": "http://0.0.0.0:5173",
+      "apiDevserverUrl": "http://0.0.0.0:4000"
+    }
+  }
+}
