@@ -23,8 +23,6 @@ router.get('/todos', async (req, res) => {
 })
 
 router.post('/todos', async (req, res) => {
-  console.log(req.body);
-  console.log(database.todos);
   const todos = await database.saveTodoItem({ userId: req.user.userId, ...req.body });
   res.status(201).json(todos);
 })
