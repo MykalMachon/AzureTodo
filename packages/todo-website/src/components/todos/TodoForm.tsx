@@ -12,10 +12,13 @@ const TodoForm = ({ getTodos }: TodoFormProps) => {
 
     setLoading(true);
 
+    const formEl = event.target as HTMLFormElement;
+    const inputEl = formEl.newTodo as HTMLInputElement;
+
     // add new todo
     // get todo data from form
     const newTodo = {
-      body: event.target.newTodo.value,
+      body: inputEl.value,
       completed: false,
     };
 
@@ -35,7 +38,7 @@ const TodoForm = ({ getTodos }: TodoFormProps) => {
     setLoading(false);
 
     // reset form
-    event.target.newTodo.value = "";
+    inputEl.value = "";
     getTodos();
   };
 

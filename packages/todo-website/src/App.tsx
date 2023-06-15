@@ -1,28 +1,34 @@
 import { useEffect, useState } from "react";
-import "./App.css";
-import TodoForm from "./TodoForm";
-import TodoList from "./TodoList";
+import { UserProvider } from "./components/contexts/UserContext";
+import TodoForm from "./components/todos/TodoForm";
+import TodoList from "./components/todos/TodoList";
+
+import useAuth from "./hooks/useAuth";
+
+import { Todo } from "./types";
+import HomePage from "./views/HomePage";
 
 function App() {
-  const [user, setUser] = useState<any>(null);
-  const [todos, setTodos] = useState<any>(null);
+  // null: loading
+  // boolean: logged out
+  // User: logged in
+  // const [user, setUser] = useState<null | boolean | User>(null);
 
-  const getUser = async () => {
-    // get azure static web app user
-    try {
-      const user = await fetch("/.auth/me");
-      const userJson = await user.json();
-      const { clientPrincipal } = userJson;
-      setUser(clientPrincipal ? clientPrincipal.userDetails : false);
-    } catch (err) {
-      console.error("something went wrong", err);
-    }
-  };
+  // null: loading
+  // Array<Todo>: todos
+  const [todos, setTodos] = useState<null | Array<Todo>>(null);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   const getTodos = async () => {
     try {
       const todoRes = await fetch("/api/todos");
       const todoData = await todoRes.json();
+      if (todoData.length === 0) return setTodos([]);
+
       setTodos(todoData);
     } catch (err) {
       console.error("something went wrong", err);
@@ -30,23 +36,14 @@ function App() {
   };
 
   useEffect(() => {
-    getUser();
     getTodos();
   }, []);
 
   return (
     <>
-      <h1>Home</h1>
-      <p>{user === null && "loading"}</p>
-      {user === false ? (
-        <a href="/.auth/login/github">Login</a>
-      ) : (
-        <div>
-          <a href="/.auth/logout">Logout</a>
-          <TodoList todos={todos} />
-          <TodoForm getTodos={getTodos} />
-        </div>
-      )}
+      <UserProvider>
+        <HomePage />
+      </UserProvider>
     </>
   );
 }
