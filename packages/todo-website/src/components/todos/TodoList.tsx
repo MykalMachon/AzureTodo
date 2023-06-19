@@ -1,21 +1,16 @@
-interface TodoListProps {
-  todos: Array<{
-    userId: string;
-    body: string;
-    completed: boolean;
-    id: string;
-  }>;
-}
+import { useTodos } from "../../hooks/useTodos";
+import TodoItem from "./TodoItem";
 
-const TodoList = ({ todos }: TodoListProps) => {
+const TodoList = () => {
+  const { todos } = useTodos();
+
   if (todos === null) return <p>Loading...</p>;
-
   if (todos.length === 0) return <p>No todos</p>;
 
   return (
     <ul>
       {todos.map((todo) => (
-        <li key={todo.id}>{todo.body}</li>
+        <TodoItem key={todo.id} todo={todo} />
       ))}
     </ul>
   );

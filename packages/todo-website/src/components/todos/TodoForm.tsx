@@ -1,11 +1,9 @@
 import { FormEvent, useState } from "react";
+import { useTodos } from "../../hooks/useTodos";
 
-interface TodoFormProps {
-  getTodos: () => void;
-}
-
-const TodoForm = ({ getTodos }: TodoFormProps) => {
+const TodoForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const { addTodo } = useTodos();
 
   const addNewTodo = async (event: FormEvent) => {
     event.preventDefault();
@@ -17,29 +15,11 @@ const TodoForm = ({ getTodos }: TodoFormProps) => {
 
     // add new todo
     // get todo data from form
-    const newTodo = {
-      body: inputEl.value,
-      completed: false,
-    };
-
-    console.log(newTodo);
-
-    // send todo to the api to be saved
-    const res = await fetch("/api/todos", {
-      method: "POST",
-      body: JSON.stringify(newTodo),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
-
-    console.log(data);
+    await addTodo(inputEl.value, false);
     setLoading(false);
 
     // reset form
     inputEl.value = "";
-    getTodos();
   };
 
   return (
