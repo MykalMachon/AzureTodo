@@ -69,7 +69,7 @@ class MockDatabase {
 }
 
 class Database {
-    constructor() {
+    constructor(connectionString) {
         this.client = new CosmosClient(connectionString);
 
         this.users;
@@ -79,9 +79,9 @@ class Database {
 
     async init() {
         const { database } = await this.client.databases.createIfNotExists({ id: 'todo-db' });
-        const { userContainer } = await database.containers.createIfNotExists({ id: 'users' });
-        const { todosContainer } = await database.containers.createIfNotExists({ id: 'todos' });
-        const { settingsContainer } = await database.containers.createIfNotExists({ id: 'settings' });
+        const { container: userContainer } = await database.containers.createIfNotExists({ id: 'users' });
+        const { container: todosContainer } = await database.containers.createIfNotExists({ id: 'todos' });
+        const { container: settingsContainer } = await database.containers.createIfNotExists({ id: 'settings' });
 
         this.users = userContainer;
         this.todos = todosContainer;
@@ -93,7 +93,7 @@ class Database {
     }
 
     async getUser(userId) {
-        const { resource } = await this.users.item(userId, userId).read();
+        const { resource } = await this.users.item(userId).read();
         return resource;
     }
 
@@ -103,7 +103,7 @@ class Database {
 
     async getTodoItemsByUser(userId) {
         // get all todos for a specific user
-        const { resources } = await this.todos.items(userId, userId).readAll().fetchAll();
+        const { resources } = await this.todos.items.query(`SELECT * FROM todos t WHERE t.userId = "${userId}"`).fetchAll();
         return resources;
     }
 
@@ -112,7 +112,7 @@ class Database {
     }
 
     async getSettings(userId) {
-        const { resource } = await this.settings.item(userId, userId).read();
+        const { resource } = await this.settings.query(`SELECT * FROM settings s WHERE s.userId = "${userId}"`).fetchAll();
         return resource.settings;
     }
 }
@@ -122,6 +122,7 @@ if (process.env.NODE_ENV == 'TEST' || process.env.NODE_ENV == 'DEV') {
     database = new MockDatabase();
 } else {
     database = new Database(process.env.COSMOS_CONNECTION_STRING);
+    database.init();
 }
 
 export default database;

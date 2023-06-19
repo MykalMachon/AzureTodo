@@ -1,0 +1,12 @@
+# Path: packages/todo-api
+
+FROM node:18-alpine
+ENV NODE_ENV=production
+
+WORKDIR /app 
+COPY ./packages/todo-api /app
+
+RUN npm ci --omit=dev --cache=/tmp/empty-cache
+
+EXPOSE 4000 
+CMD ["npm", "start"]
