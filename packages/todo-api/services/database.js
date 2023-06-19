@@ -118,7 +118,9 @@ class Database {
 }
 
 let database = null
-if (process.env.NODE_ENV == 'TEST' || process.env.NODE_ENV == 'DEV') {
+if (process.env.NODE_ENV == 'DEV' || process.env.COSMOS_CONNECTION_STRING == undefined) {
+    console.log('Using mock database');
+    console.log(`either NODE_ENV or COSMOS_CONNECTION_STRING is not set.`);
     database = new MockDatabase();
 } else {
     database = new Database(process.env.COSMOS_CONNECTION_STRING);
