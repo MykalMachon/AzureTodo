@@ -6,5 +6,4 @@ services:
       dockerfile: ./packages/todo-api/Dockerfile
     ports:
       - "4000:4000"
-    env_file:
-      - fileName: ./packages/todo-api/.env
+    env_file: "./packages/todo-api/.env"
