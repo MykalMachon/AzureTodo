@@ -36,6 +36,11 @@ const HomePage = () => {
           </div>
         )}
       </main>
+      <footer>
+        <p>
+          built by <a href="https://mykal.codes/">mykal.codes</a>
+        </p>
+      </footer>
     </>
   );
 };
