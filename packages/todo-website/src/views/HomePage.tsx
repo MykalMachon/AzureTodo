@@ -17,7 +17,8 @@ const HomePage = () => {
         )}
         {user !== false && user !== null && (
           <p>
-            Hi, {user.userDetails}! <a href="/.auth/logout">Logout</a>
+            Hi, {user !== true && user.userDetails}!{" "}
+            <a href="/.auth/logout">Logout</a>
           </p>
         )}
       </header>
