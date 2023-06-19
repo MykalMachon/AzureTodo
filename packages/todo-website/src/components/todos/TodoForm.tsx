@@ -25,8 +25,8 @@ const TodoForm = () => {
   return (
     <form onSubmit={addNewTodo}>
       <label htmlFor="newTodo">
-        Todo:
-        <input type="text" id="newTodo" name="newTodo" />
+        <span>New Todo: </span>
+        <input type="text" id="newTodo" name="newTodo" disabled={loading} />
       </label>
       <button type="submit" disabled={loading}>
         {loading ? "Loading..." : "Add Todo"}

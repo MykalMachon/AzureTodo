@@ -9,14 +9,27 @@ const HomePage = () => {
     <>
       <header>
         <h1>Home</h1>
+        {user === null && <p>loading...</p>}
+        {user === false && (
+          <p>
+            <a href="/.auth/login/github">Login</a>
+          </p>
+        )}
+        {user !== false && user !== null && (
+          <p>
+            Hi, {user.userDetails}! <a href="/.auth/logout">Logout</a>
+          </p>
+        )}
       </header>
       <main>
         <p>{user === null && "loading"}</p>
-        {user === false ? (
-          <a href="/.auth/login/github">Login</a>
+        {user === false || user === null ? (
+          <>
+            {user === false && <p>please log in</p>}
+            {user === null && <p>loading...</p>}
+          </>
         ) : (
           <div>
-            <a href="/.auth/logout">Logout</a>
             <TodoList />
             <TodoForm />
           </div>
