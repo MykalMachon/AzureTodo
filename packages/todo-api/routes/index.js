@@ -32,6 +32,25 @@ router.put('/todos/:id', async (req, res) => {
   res.status(200).json(todos)
 })
 
+router.delete('/todos/:id', async (req, res) => {
+  const { id } = req.params;
+  // get todo item by id
+  const todoItem = await database.getTodoItemById(id, req.user.userId);
+  if (todoItem) {
+    console.log('found todo item', todoItem)
+    if (req.user.userId !== todoItem.userId) {
+      console.log('user has incorrect perms')
+      return res.status(403).json({ message: 'Not allowed to delete this item' })
+    } else {
+      console.log('user has correct perms. deleting...')
+      await database.deleteTodoItem(id, req.user.userId);
+      return res.status(200).json({ message: 'OK' })
+    }
+  } else {
+    return res.status(404).json({ message: 'Not found' })
+  }
+})
+
 // settings routes
 
 export default router;

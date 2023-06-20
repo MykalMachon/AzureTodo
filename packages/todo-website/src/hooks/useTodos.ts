@@ -19,8 +19,16 @@ export const useTodos = () => {
         });
         await getTodos();
       },
-      removeTodo: () => {
+      removeTodo: async (todo: Todo) => {
         // TODO: implement me
+        const res = await fetch(`/api/todos/${todo.id}`, {
+          method: "DELETE",
+        });
+        if (res.status == 200) {
+          await getTodos();
+        } else {
+          alert("could not delete todo...");
+        }
       },
       updateTodo: async (todo: Todo) => {
         // send todo to the api to be saved

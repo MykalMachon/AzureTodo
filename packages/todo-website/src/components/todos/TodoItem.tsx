@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTodos } from "../../hooks/useTodos";
 import { Todo } from "../../types";
 
@@ -7,26 +7,44 @@ interface TodoItemProps {
 }
 
 const TodoItem = ({ todo }: TodoItemProps) => {
-  const { toggleTodo } = useTodos();
+  const { toggleTodo, removeTodo } = useTodos();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleClick = async (e: React.FormEvent<HTMLInputElement>) => {
+  const handleToggleClick = async (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
     setLoading(true);
     await toggleTodo(todo);
     setLoading(false);
   };
 
+  const handleDeleteClick = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    await removeTodo(todo);
+    setLoading(false);
+  };
+
   return (
     <li>
-      <input
-        type="checkbox"
-        id={`todo-${todo.id}`}
-        onChange={handleClick}
-        checked={todo.completed}
+      <div>
+        <input
+          type="checkbox"
+          id={`todo-${todo.id}`}
+          onChange={handleToggleClick}
+          checked={todo.completed}
+          disabled={loading}
+        />
+        <label htmlFor={`todo-${todo.id}`}>{todo.body}</label>
+      </div>
+      <button
+        aria-label="Delete"
+        onClick={handleDeleteClick}
         disabled={loading}
-      />
-      <label htmlFor={`todo-${todo.id}`}>{todo.body}</label>
+      >
+        <span role="img" aria-label="Delete">
+          🗑️
+        </span>
+      </button>
     </li>
   );
 };

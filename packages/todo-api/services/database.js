@@ -50,6 +50,21 @@ class MockDatabase {
         return todoItem;
     }
 
+    async deleteTodoItem(todoId, userId) {
+        await this.#delay();
+        const usersTodos = this.todos[userId];
+        console.log(usersTodos);
+        if (usersTodos) {
+            // found your user todos
+            const index = usersTodos.findIndex(t => t.id == todoId);
+            console.log(index);
+            if (index >= 0) {
+                usersTodos.splice(index, 1);
+            }
+        }
+        return null;
+    }
+
     async getTodoItemsByUser(userId) {
         await this.#delay();
         const usersTodos = this.todos[userId];
@@ -61,6 +76,15 @@ class MockDatabase {
             console.log('userTodos are undefined')
             return []
         }
+    }
+
+    async getTodoItemById(todoId, userId) {
+        await this.#delay();
+        const usersTodos = this.todos[userId];
+        if (usersTodos) {
+            return usersTodos.find(t => t.id == todoId);
+        }
+        return null;
     }
 
     async #delay() {
@@ -101,10 +125,19 @@ class Database {
         await this.todos.items.upsert(todoItem);
     }
 
+    async deleteTodoItem(todoId, userId = "") {
+        await this.todos.item(todoId).delete();
+    }
+
     async getTodoItemsByUser(userId) {
         // get all todos for a specific user
         const { resources } = await this.todos.items.query(`SELECT * FROM todos t WHERE t.userId = "${userId}"`).fetchAll();
         return resources;
+    }
+
+    async getTodoItemById(todoId) {
+        const { resource } = await this.todos.item(todoId).read();
+        return resource;
     }
 
     async saveSettings(userId, settings) {

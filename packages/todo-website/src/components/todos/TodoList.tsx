@@ -8,7 +8,7 @@ const TodoList = () => {
   if (todos.length === 0) return <p>No todos</p>;
 
   return (
-    <ul>
+    <ul className="todolist">
       {todos.map((todo) => (
         <TodoItem key={todo.id} todo={todo} />
       ))}
