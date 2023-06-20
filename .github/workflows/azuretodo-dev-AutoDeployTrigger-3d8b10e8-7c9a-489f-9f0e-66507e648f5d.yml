@@ -6,7 +6,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "packages/todo-api/dockerfile/**"
+      - "packages/todo-api/**"
       - ".github/workflows/azuretodo-dev-AutoDeployTrigger-3d8b10e8-7c9a-489f-9f0e-66507e648f5d.yml"
 
   # Allow mannually trigger
@@ -28,7 +28,7 @@ jobs:
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v1
         with:
-          appSourcePath: ${{ github.workspace }}/packages/todo-api
+          appSourcePath: ${{ github.workspace }}/packages/todo-api/
           registryUrl: azuretododev.azurecr.io
           registryUsername: ${{ secrets.AZURETODODEV_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.AZURETODODEV_REGISTRY_PASSWORD }}
