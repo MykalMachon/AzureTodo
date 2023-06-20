@@ -6,11 +6,14 @@ on:
       - main
     paths:
       - "packages/todo-website/**"
-      - ".github/workflows/azure-static-web-apps-ashy-island-06fc74d10.yml"
+      - ".github/workflows/deploy-todo-website.yml"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+
+  # Allow manually trigger
+  # workflow_dispatch:
 
 jobs:
   build_and_deploy_job:

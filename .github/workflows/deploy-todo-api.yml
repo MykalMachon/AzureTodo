@@ -1,4 +1,4 @@
-name: Trigger auto deployment for azuretodo-dev
+name: Azure Container Apps CI/CD
 
 # When this action will be executed
 on:
@@ -7,10 +7,10 @@ on:
     branches: [main]
     paths:
       - "packages/todo-api/**"
-      - ".github/workflows/azuretodo-dev-AutoDeployTrigger-3d8b10e8-7c9a-489f-9f0e-66507e648f5d.yml"
+      - ".github/workflows/deploy-todo-api.yml"
 
   # Allow mannually trigger
-  workflow_dispatch:
+  # workflow_dispatch:
 
 jobs:
   build-and-deploy:
