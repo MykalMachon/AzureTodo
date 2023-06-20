@@ -28,11 +28,11 @@ jobs:
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v1
         with:
-          appSourcePath: ${{ github.workspace }}/packages/todo-api/
+          appSourcePath: ${{ github.workspace }}
           registryUrl: azuretododev.azurecr.io
           registryUsername: ${{ secrets.AZURETODODEV_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.AZURETODODEV_REGISTRY_PASSWORD }}
           containerAppName: azuretodo-dev
           resourceGroup: azure-todo_dev
           imageToBuild: azuretododev.azurecr.io/todo-api:${{ github.sha }}
-          dockerfilePath: dockerfile
+          dockerfilePath: packages/todo-api/dockerfile
