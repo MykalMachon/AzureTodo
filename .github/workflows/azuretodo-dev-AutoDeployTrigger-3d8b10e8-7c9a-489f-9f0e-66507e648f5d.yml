@@ -4,15 +4,14 @@ name: Trigger auto deployment for azuretodo-dev
 on:
   # Automatically trigger it when detected changes in repo
   push:
-    branches: 
-      [ main ]
+    branches: [main]
     paths:
-    - 'packages/todo-api/dockerfile/**'
-    - '.github/workflows/azuretodo-dev-AutoDeployTrigger-3d8b10e8-7c9a-489f-9f0e-66507e648f5d.yml'
+      - "packages/todo-api/dockerfile/**"
+      - ".github/workflows/azuretodo-dev-AutoDeployTrigger-3d8b10e8-7c9a-489f-9f0e-66507e648f5d.yml"
 
-  # Allow mannually trigger 
+  # Allow mannually trigger
   workflow_dispatch:
-      
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -29,14 +28,11 @@ jobs:
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v1
         with:
-          appSourcePath: ${{ github.workspace }}/packages/todo-api/dockerfile 
+          appSourcePath: ${{ github.workspace }}/packages/todo-api/dockerfile
           registryUrl: azuretododev.azurecr.io
           registryUsername: ${{ secrets.AZURETODODEV_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.AZURETODODEV_REGISTRY_PASSWORD }}
           containerAppName: azuretodo-dev
           resourceGroup: azure-todo_dev
           imageToBuild: azuretododev.azurecr.io/todo-api:${{ github.sha }}
-          dockerfilePath: Dockerfile
-
-     
-
+          dockerfilePath: dockerfile
