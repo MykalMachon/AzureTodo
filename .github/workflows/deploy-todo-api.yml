@@ -60,7 +60,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: ./packages/todo-api
+          context: .
           file: ./packages/todo-api/dockerfile
           push: true
           tags: ghcr.io/${{ env.REPO_LOWERCASE }}-api:${{ github.sha }}
