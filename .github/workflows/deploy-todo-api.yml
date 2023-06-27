@@ -38,12 +38,14 @@ jobs:
           echo "REPO_LOWERCASE=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./packages/todo-api/dockerfile
           push: true
           tags: ghcr.io/${{ env.REPO_LOWERCASE }}-api:${{ github.sha }}, ghcr.io/${{ env.REPO_LOWERCASE }}-api:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy-to-azure:
     name: Deploy new Image to Azure
@@ -51,9 +53,6 @@ jobs:
     needs: build-and-publish
 
     steps:
-      - name: Checkout to the branch
-        uses: actions/checkout@v2
-
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -67,7 +66,7 @@ jobs:
           registryPassword: ${{ secrets.AZURETODODEV_REGISTRY_PASSWORD }}
           containerAppName: azuretodo-dev
           resourceGroup: azure-todo_dev
-          imageToBuild: ghcr.io/${{ env.REPO_LOWERCASE }}-api:${{ github.sha }}
+          imageToDeploy: ghcr.io/${{ env.REPO_LOWERCASE }}-api:${{ github.sha }}
 
      
 
